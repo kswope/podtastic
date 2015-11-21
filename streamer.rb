@@ -17,12 +17,16 @@ FileUtils.mkdir_p(STREAM_OUTPUT_DIR)
 # streamripper #{url} -d #{output_dir} -a #{filename} -l #{duration}
 # streamripper http://stream.abacast.net/playlist/entercom-wrkoammp3-64.m3u -a out.mp3 -l 10
 
-url = 'http://stream.abacast.net/playlist/entercom-wrkoammp3-64.m3u'
-filename='my.mp3'
-duration = 10
+ 
+# http://www.wntk.com/wntk.m3u
+# http://stream.abacast.net/playlist/entercom-wrkoammp3-64.m3u
+url = ARGV[0]
+filename= ARGV[1]
+duration = 5
 
 command = "streamripper #{url} -d #{STREAM_OUTPUT_DIR} -a #{filename} -l #{duration}"
-pp command
+puts "running #{command}"
+system(command)
 
 exit
 
