@@ -3,16 +3,19 @@
 require "rss"
 require 'pp'
 require 'fileutils'
-require 'bundler'
-Bundler.require
+require_relative 'lib'
 
 MAX_AGE=4
-STREAM_OUTPUT_DIR='output'
+STREAM_OUTPUT_DIR='stream_output'
 
 FileUtils.mkdir_p(STREAM_OUTPUT_DIR)
 
+
+
+
+
 # run
-# ./streamer stream_url duration
+# ./streamer name stream_url duration
 
 # streamripper #{url} -d #{output_dir} -a #{filename} -l #{duration}
 # streamripper http://stream.abacast.net/playlist/entercom-wrkoammp3-64.m3u -a out.mp3 -l 10
@@ -20,13 +23,24 @@ FileUtils.mkdir_p(STREAM_OUTPUT_DIR)
  
 # http://www.wntk.com/wntk.m3u
 # http://stream.abacast.net/playlist/entercom-wrkoammp3-64.m3u
-url = ARGV[0]
-filename= ARGV[1]
-duration = 5
+usage = './streamer.rb program_name stream_url duration'
+unless ARGV.length == 3
+  raise usage
+end
+name = ARGV[0] or raise usage
+url = ARGV[1] or raise usage
+duration = ARGV[2] or raise usage
+duration = duration.to_i / 60 # convert input minutes to seconds
 
-command = "streamripper #{url} -d #{STREAM_OUTPUT_DIR} -a #{filename} -l #{duration}"
+output_dir = File.join(STREAM_OUTPUT_DIR, sanitize_filename(url))
+
+command = "streamripper #{url} -d #{output_dir} -a out -l #{duration}"
 puts "running #{command}"
 system(command)
+
+
+
+
 
 exit
 
