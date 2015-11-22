@@ -4,23 +4,20 @@
 ---
 
 - hosts: all
+  vars:
+    build_dir=/tmp/podtastic
+    name=podtastic
+    image=kswope/{{name}}
 
   tasks:
 
     # move important stuff into docker build directory
-    - command: cp -r {{clone_dir}}/deploy/Dockerfile                  {{build_dir}}
-    - command: cp -r {{clone_dir}}/deploy/nginx/webapp.conf           {{build_dir}}
-    - command: cp -r {{clone_dir}}/deploy/nginx/preserve_secrets.conf {{build_dir}}
-    - command: cp -r {{clone_dir}}/deploy/nginx/nginx_tunings.conf    {{build_dir}}
-    - command: cp -r {{clone_dir}}/deploy/apt_upgrade.txt             {{build_dir}}
-    - command: cp -r {{clone_dir}}/deploy/rake_db_migrate.sh          {{build_dir}}
-    - command: cp -r {{clone_dir}}/backend                            {{build_dir}}
+    - command: cp -r Dockerfile                  {{build_dir}}
 
-
-    - docker_image: path={{build_dir}} name={{image}} tag={{commit}} state=present
+    - docker_image: path={{build_dir}} name={{image}} state=present
       sudo: yes
 
 
-    - shell: docker push {{image}}:{{commit}}
+    - shell: docker push {{image}}
       sudo: yes
 
