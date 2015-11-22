@@ -29,7 +29,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # COPY preserve_secrets.conf /etc/nginx/main.d/
 # COPY nginx_tunings.conf    /etc/nginx/conf.d/
 # COPY rake_db_migrate.sh    /etc/my_init.d/90_rake_db_migrate.sh
-COPY streamer.rb /tmp
+COPY streamer.rb /tmp/
 
 # RUN mkdir $rails_root
 # WORKDIR $rails_root
