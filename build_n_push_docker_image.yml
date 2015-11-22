@@ -12,7 +12,7 @@
   tasks:
 
     # move important stuff into docker build directory
-    - command: cp -r Dockerfile                  {{build_dir}}
+    - synchronize: src=Dockerfile dest={{build_dir}}
 
     - docker_image: path={{build_dir}} name={{image}} state=present
       sudo: yes
