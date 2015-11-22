@@ -25,6 +25,7 @@ def run_command(command, ansible=true)
   if ansible && ( stdout.match(/failed=[1-9]+/) || 
                   stdout.match(/unreachable=[1-9]+/) ||
                   stdout.match(/ERROR/)) || !stderr.empty?
+
     unless stdout.empty?
       puts "\nSTDOUT from failed command:".on_yellow.blink
       puts "#{stdout}".on_yellow
