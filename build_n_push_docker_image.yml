@@ -5,7 +5,7 @@
 
 - hosts: all
   vars:
-    build_dir: /tmp/podtastic
+    build_dir: /tmp/podtastic/
     name: podtastic
     image: kswope/{{name}}
 
