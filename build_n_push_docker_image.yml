@@ -5,11 +5,13 @@
 
 - hosts: all
   vars:
-    build_dir: /tmp/podtastic/
+    build_dir: /tmp/podtastic_build/
     name: podtastic
     image: kswope/{{name}}
 
   tasks:
+
+    - file: path='{{build_dir}}' state=directory
 
     # move important stuff into docker build directory
     - synchronize: src=Dockerfile dest={{build_dir}}
