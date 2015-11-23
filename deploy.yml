@@ -8,6 +8,7 @@
     build_dir: /tmp/podtastic_build/
     name: podtastic
     image: kswope/{{name}}
+    repo: https://github.com/kswope/podtastic 
 
   tasks:
 
@@ -15,10 +16,11 @@
 
     - file: path='{{build_dir}}' state=directory
 
-    # move important stuff into docker build directory
-    - synchronize: src=Dockerfile dest={{build_dir}}
-    - synchronize: src=streamer.rb dest={{build_dir}}
+    # clone git repo
+    # https://developer.github.com/guides/using-ssh-agent-forwarding/
+    - git: repo={{repo}} dest={{build_dir}}
 
+    # build image
     - docker_image: path={{build_dir}} name={{image}} state=present
       sudo: yes
 
@@ -27,10 +29,11 @@
 
     - docker: 
         image: '{{image}}'
-        name: '{{name}}'
+        name:  '{{name}}'
         state: restarted
         env:
-          RDS_PASSWORD: '{{ ansible_env.RDS_PASSWORD }}'
+          RDS_USERNAME: "{{ lookup('env','RDS_USERNAME') }}"
+          RDS_PASSWORD: "{{ lookup('env','RDS_PASSWORD') }}"
       sudo: yes
 
 
