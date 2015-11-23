@@ -1,13 +1,12 @@
 #!/bin/bash
 
-# Returns true only if the current directory is git commited and push
-
+# Returns true only if the current directory is commited and pushed
 
 STAT=`git status --porcelain`
 REV=`git rev-list @{u}..` # unpushed
 
 if [ -n "$STAT" ] || [ -n "$REV" ]; then
-    echo "returning false!!!!!"
+    echo 'Not committed and pushed' 1>&2
     exit 1
 fi
 
