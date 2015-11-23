@@ -45,6 +45,9 @@ end
 # check if we forgot to commit anything (push is checked with checkout in
 # ansible script)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# git rev-list @{u}..
+
 status = `git status --porcelain`
 unless status.empty?
   puts "*** Refusing to run because git status returned ...".on_red
