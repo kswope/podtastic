@@ -14,10 +14,6 @@ unless ARGV.length == 3
 end
 
 
-
-
-
-
 # run
 # ./streamer name stream_url duration
 
