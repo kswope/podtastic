@@ -11,7 +11,7 @@
 
   tasks:
 
-    - local_action: command ./gitdone
+    - local_action: command gitdone
 
     - file: path='{{build_dir}}' state=directory
 
