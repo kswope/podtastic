@@ -11,6 +11,8 @@
 
   tasks:
 
+    - local_action: command true
+
     - file: path='{{build_dir}}' state=directory
 
     # move important stuff into docker build directory
@@ -19,7 +21,6 @@
 
     - docker_image: path={{build_dir}} name={{image}} state=present
       sudo: yes
-
 
     - shell: docker push {{image}}
       sudo: yes
