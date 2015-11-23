@@ -22,6 +22,6 @@
     - docker_image: path={{build_dir}} name={{image}} state=present
       sudo: yes
 
-    - shell: docker push {{image}}
-      sudo: yes
+    # - shell: docker push {{image}}
+    #   sudo: yes
 
