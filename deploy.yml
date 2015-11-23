@@ -25,3 +25,10 @@
     # - shell: docker push {{image}}
     #   sudo: yes
 
+    - docker: 
+      image: '{{image}}'
+      name: '{{name}}'
+      state: reloaded
+      env:
+        RDS_PASSWORD: '{{ ansible_env.RDS_PASSWORD }}'
+      
