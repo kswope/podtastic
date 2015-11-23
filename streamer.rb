@@ -5,7 +5,7 @@ require 'pp'
 require 'fileutils'
 require_relative 'lib'
 
-MAX_AGE=4
+MAX_AGE=5
 STREAM_OUTPUT_ROOT='var/stream_output'
 SYNC_ROOT='var/sync_dir'
 
