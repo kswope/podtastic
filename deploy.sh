@@ -1,4 +1,4 @@
 
 
 
-ansible-playbook -v deploy.yml -u ubuntu -i lucerne,
+ansible-playbook -vv deploy.yml -u ubuntu -i lucerne,
