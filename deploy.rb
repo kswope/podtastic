@@ -8,6 +8,7 @@ require 'open3'
 
 
 
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Typical run command in shell.
 # Ansible needs an extra error condition because if a task fails its printed
