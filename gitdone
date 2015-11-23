@@ -1,52 +1,14 @@
-# !/usr/bin/env ruby
+#!/bin/bash
 
-# require 'bundler'
-# Bundler.require
-# require 'pp'
-# require 'json'
-# require 'open3'
+# Returns true only if the current directory is git commited and push
 
 
 STAT=`git status --porcelain`
-REV=`git rev-list @{u}..`
+REV=`git rev-list @{u}..` # unpushed
 
 if [ -n "$STAT" ] || [ -n "$REV" ]; then
     echo "returning false!!!!!"
+    exit 1
 fi
-echo $REV
-echo $STAT
-
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# check if we forgot to commit anything (push is checked with checkout in
-# ansible script)
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-# git rev-list @{u}..
-
-# status = `git status --porcelain`
-# unless status.empty?
-#   puts "*** Refusing to run because git status returned ...".on_red
-#   print status
-#   exit 1
-# end
-
-
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# run playbook that remotely builds and pushes docker image
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# command = ''
-# command += "ansible-playbook build_n_push_docker_image.yml"
-# command += " -u ubuntu -i lucerne,"
-# run_command(command, ansible:true)
-
-
-
-
-
-
-
-
 
 
