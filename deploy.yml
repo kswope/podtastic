@@ -28,7 +28,7 @@
     - docker: 
         image: '{{image}}'
         name: '{{name}}'
-        state: reloaded
+        state: restarted
         env:
           RDS_PASSWORD: '{{ ansible_env.RDS_PASSWORD }}'
       sudo: yes
