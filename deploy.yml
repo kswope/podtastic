@@ -30,7 +30,7 @@
     - docker: 
         image: '{{image}}'
         name:  '{{name}}'
-        state: restarted
+        state: reloaded
         env:
           RDS_USERNAME: "{{ lookup('env','RDS_USERNAME') }}"
           RDS_PASSWORD: "{{ lookup('env','RDS_PASSWORD') }}"
