@@ -16,6 +16,8 @@ MAX_FEED_ITEM_AGE=7
 STREAM_OUTPUT_ROOT='var/active_streams'
 SYNC_ROOT='var/sync_dir'
 
+BUCKET_URL = 'https://s3.amazonaws.com/podtastic'
+BUCKET = Aws::S3::Resource.new.bucket('podtastic')
 
 #------------------------------------------------------------------------------
 # program args validation and assignment
@@ -41,29 +43,51 @@ duration = duration.to_i * 60 # convert input minutes to seconds
 # http://stream.abacast.net/playlist/entercom-wrkoammp3-64.m3u
 
 
-# unique identifier
-prog_key = sanitize_filename([program_name,stream_url].join('_'))
+# create unique identifier for stream for file naming
+prog_key = sanitize_filename([program_name,stream_url].join('_')).downcase
 
 stream_dir = File.join(STREAM_OUTPUT_ROOT, prog_key)
 FileUtils.mkdir_p(stream_dir)
 
 
-duration = 1 # DEBUG
+duration = 10 # DEBUG
 command = "streamripper #{stream_url} -d #{stream_dir} -a out -l #{duration} -o always"
 puts "running #{command}"
 system(command)
 
 
-# copy output to sync_dir
-sync_dir = File.join(SYNC_ROOT, prog_key)
-FileUtils.mkdir_p(sync_dir)
 
-# will this always be mp3 extension?
-FileUtils.cp(File.join(stream_dir, 'out.mp3'), sync_dir)
+#------------------------------------------------------------------------------
+# file/name/path munging
+#------------------------------------------------------------------------------
 
+# Get the output file name from the cue file - could be out.mp3, out.aac, who knows
+out_file_name = File.open("#{stream_dir}/out.cue", &:gets).match(/^FILE \"(.*)\"/)[1]
+
+# absolute path to out file
+out_file_path = File.expand_path(File.join(stream_dir, out_file_name))
+
+# name we will give to stream file served
+url_name = out_file_name.gsub('out', prog_key)
+
+# full public url
+url_file = File.join(BUCKET_URL, url_name)
+
+
+
+#------------------------------------------------------------------------------
+# Upload stream to S3
+#------------------------------------------------------------------------------
+BUCKET.put_object(key:url_name, acl:'public-read', body:File.open(out_file_path))
+
+
+
+#------------------------------------------------------------------------------
 # cleanup
+#------------------------------------------------------------------------------
 FileUtils.rmtree(stream_dir)
 
+exit
 
 #------------------------------------------------------------------------------
 # Engage lockfile because multiples of this script may be running
@@ -77,9 +101,7 @@ Lockfile.new('/tmp/podtastic.lock') do
   # Get rss feed from S3 bucket (bucket will be called upon again at end of script)
   #------------------------------------------------------------------------------
   rssio = StringIO.new # place to put bucket contents (what is this, c?)
-  resource = Aws::S3::Resource.new
-  bucket = resource.bucket('podtastic')
-  bucket.object('rss.xml').get(response_target:rssio)
+  BUCKET.object('rss.xml').get(response_target:rssio)
   feed = RSS::Parser.parse(rssio)
 
 
